@@ -2012,3 +2012,577 @@ dvc push 							# Push repro-Processed data
 dvc status							# Status should be: Data and pipelines are up to date.
 	
 			
+
+	
+	
+
+######################
+Day-7: 20th Dec. 2025
+######################	
+
+	Work with MLOps Projects ::::
+	
+	List of Tools/Services :
+	
+	- Monitoring the ML Model :
+	
+		Open-Source Tools :
+		
+			1. MLFLow :::	Tracking & Experiment 
+			
+			GUI Based Monitoring 
+			
+				- To ensure the expected level of accuracy ==> 95% Accuracy depends on the data!	
+		
+			2. Prometheus & Grafana
+			
+				- Infra-Structure Monitoring & the Kubernetes Pods Monitoring
+
+	
+		Managed Services from AWS --> Paid Service.
+		
+			1. AWS Sagemaker ==> Use cases/Application ==> 8GB RAM 
+			
+	
+	- Application Web Services :::
+	
+		- Fast API 		==> Acts as a Backend 
+		
+		- Streamlit		==> User Interface.
+		
+		
+	- Packaging the Model :::
+	
+		- Docker & DockerHub 
+		- ECS/ECR 
+		
+			- Application(Model Scripts) & its dependencies
+			
+			- Do not package Data and Model 
+			
+			- Create dedicated Containers for API and UI
+			
+	- Container Orchestration Tool :
+	 
+		- Kubernetes Open-Source 
+		- EKS/AKS/GKE
+		
+	- github-actions CICD Pipeline 
+	
+	
+
+MLOps Project ::::
+
+	- Create an ML Model using 
+	
+		-> Streamlit, Fast-API,
+		
+	1. Simple Web Application :
+	
+	
+	2. Prod Level Application :
+	
+	
+	DevOps / MLOps Team / LLMOps :
+	
+	Roles & Responsibilities ::
+	
+	- Detailed Assessment of the requirement 
+	
+		- Interact with all the ML Teams --> DS,DE, ML Engg, 
+		
+		Tools to be used :
+		
+		MLOps Stack!
+		
+			- Source Code :		Application Source Code - API, UI, Pipeline(Train the Model)
+			
+			- Package 	  :  	Docker & DockerHub 
+			
+			- Artifacts   :		Trained Model --> joblib/pickle - model.pkl  
+			
+			- Depeloyment  :	DockerHub 	# get the Container Images 
+								AWS S3 	  	# get the Model & Data
+								Kubernetes	# To Orchestrate the Containers 
+								Kubernetes Cluster is the Target Environment
+								
+								
+		Kubernetes ::::
+		
+			- It is a Open-Source Container Orchestration Tool 
+			- Kubernetes is used to Deploy any type of Containers.
+			- It is used to ensure high availability of the Applications/services running thru Containers.
+			- Used to Ensure High Availability of Containers by creating Replicas of Containers.
+			- It supports Auto-Scaling & Load Balancing.
+
+			- Self-healing Capability!
+			
+			- Using this we can achieve Continuous Deployment
+
+
+			
+		Kubernetes Architecture :::
+			
+			Architecture Components :::
+
+		- Kubernetes Architecture components :::
+		
+			API_Server 				--> # Acts as an interface to the kubernetes 
+			
+			ETCD 					--> # Single point of Source for Kubernetes Components 
+			
+			Scheduler				--> # To identify the Healthy Node for Deployments
+			
+			Controller Manager 		--> # To run the pods in its desired state 
+			
+			
+			Kubelet 				--> # Is a Kubernetes Agent used to Create & Deploy the Pods
+			
+			KubeProxy				--> # Is used to enable pod networking by create Pod IP Address			
+			
+			CRI - Container RunTime Interface (Container-D)
+									--> # It is used identify the Image from Container Registry for deployment							
+			
+			
+			
+		- Terminologies :::
+		
+			- Container Images :
+				- It is a static file used to define the properties and dependencies of application
+				- These are non-executable 
+				- It is composed of various layers of instruction created using Dockerfile.
+						
+			- Container :
+			
+				- Container is an executable entity of Container Image
+			
+			- Container Registry :
+				- Container Registry is used to Store/Manage the Container Images.
+				- DockerHub is a default Container Registry for Docker Container Engine.
+				https://hub.docker.com/
+				
+				
+			- Container Repository :				Public/Private 
+				- Sub-set of Container Registry 
+				
+				
+
+			- Kubectl 						# It is Command Line Utility to interact with Kubernetes Master 
+			
+			- Kubernetes Cluster 
+											# Is a collection of Worker Nodes. 
+							
+			- Pod 							# Atomic Unit of Scheduling 			
+			
+			- Kubernetes_Master				# Used to Create and Schedule the Deployments to Kubernetes_WorkNodes
+			
+			- Kubernetes_WorkNodes			# Target Servers 
+			
+			
+			--> Deploy 5 Replicas of Pod:
+					==> Can be distibuted to all the available nodes by kubernetes
+					
+			
+	- To Setup the Kubernetes Architecture :::
+
+			Kubernetes_Master 
+				Kubernetes_WorkerNode1
+				Kubernetes_WorkerNode2
+				
+	- Kubeadm 			# Multi-Node Cluster with full capabilities 
+						# Highly recommended for Prod Implementation
+						
+						# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+						
+	- Minikube, K3s		# Learning basic kubectl commands 
+						# Single Node Cluster 		
+
+						# https://docs.k3s.io/installation
+						
+						
+		Using K3s :
+		
+			Use AWS Ubuntu - 22.04V AMI 
+			
+			- sudo -i 
+			
+			- apt update -y  
+			
+			- curl -sfL https://get.k3s.io | sh -
+			
+			- sudo systemctl status k3s
+			
+			- kubectl get nodes 
+			
+	
+	
+	- Working with Kubernetes Deployment Controller Object :::
+	
+	vi deploy-ui.yaml 			# Used to define the Pods for UI	- Streamlit UI
+	
+	vi nodeport-svc-ui.yaml		# Nodeport is used to expose the pods to internet
+
+
+	vi deploy-api.yaml 			# Used to define the Pods for APIs 	- Fast API 
+			
+	vi nodeport-svc-api.yaml	# Nodeport is used to expose the pods to internet
+	
+
+
+	Create a build server :
+	
+	
+	sudo -i 
+	
+	source venv/bin/activate
+	
+	pip install -r requirements.txt
+	
+	cd Proj_directory 
+	
+	> 
+	
+git init 
+
+dvc init 
+
+dvc remote add -d s3remote s3://edu-loksai-mlproj-bkt1
+
+git add .dvc/config
+
+git commit -m "Configure DVC S3 remote"
+
+vi data/raw/reviews.csv				# Add sample Records as shown below		
+
+dvc add data/raw/reviews.csv		# Add data/raw/reviews.csv to git after every dvc add
+
+git add data/raw/reviews.csv.dvc data/raw/.gitignore
+
+git commit -m "Added DVC Data-v1"
+
+dvc repro
+
+
+git add data/processed/.gitignore models/.gitignore dvc.lock			# Add dvc.lock to git after every dvc repro
+
+git commit -m "repro-Processed data-v1"
+
+dvc push 							# Push repro-Processed data 
+
+dvc status							# Status should be: Data and pipelines are up to date.
+	
+	
+######################
+Day-8: 21st Dec. 2025
+######################	
+
+
+	Model Management :
+
+	Work with the Trained Model :::
+		- mlflow 
+		- Model API 
+		- Model UI 
+
+# Stop any running MLflow process
+pkill -f mlflow
+
+# Remove ALL server overrides (VERY IMPORTANT)
+unset MLFLOW_UI_SERVER
+unset MLFLOW_GUNICORN_OPTS
+unset MLFLOW_WAITRESS_OPTS
+
+# Start MLflow UI (ONLY correct command)
+mlflow ui --host 0.0.0.0 --port 5000 --allowed-hosts '*'
+
+# Open in browser
+http://<EC2_PUBLIC_IP>:5000
+
+
+### OPTIONAL: MODEL VALIDATION
+# Run API locally
+uvicorn api.main:app --host 0.0.0.0 --port 8000
+
+# Open in browser
+http://<EC2_PUBLIC_IP>:8000
+
+Eg.: http://13.201.128.37:8000/docs
+
+### Run Streamlit
+streamlit run ui/app.py --server.address 0.0.0.0			### Confirm predictions change with new data.
+
+# Open in browser
+http://<EC2_PUBLIC_IP>:8501
+
+
+	Upload the Model to s3 
+	
+	
+	
+	Containerize the ML Project - API & UI 
+	
+		- Docker Image -> ML Project - API & UI 
+						-> Should not have any Trained Model
+							- This Trained Model should received at runtime
+	
+	
+	use the Docker.api & Docker.ui   # Dockerfiles to Build Image.
+	
+		docker build -f docker/Dockerfile.api -t loksaieta/api830 . 
+	
+		docker build -f docker/Dockerfile.ui -t loksaieta/ui830 . 
+
+	
+	Publish the ML Project - API & UI to DockerHub 
+	
+		docker login -u <dockerhub_login_id>
+		
+		Password: <DockerHub_PAT>
+		
+		docker push loksaieta/api830
+	
+		docker push loksaieta/ui830
+		
+		
+		
+	
+	Publish the ML Project to Github Repository 			# https://github.com/Edu-MLOps-BA1125/Loksai-MLProject-e2e
+	
+	
+	
+	
+	
+	MLOps Process :::
+	
+	Create CI CICD Pipeline :
+	
+		Build Orchestration Tool :
+		
+			- Jenkins / Az Pipelines / AWS CodePipelines/ gitlab-ci / github-actions workflow 
+			
+			
+			Build_Environment :
+			- Dynamic Build GitHub Server 
+			
+				-  Source Code Check out 
+				-  Perform Build Docker / Image Build  
+				-  Publish the Build Artifacts / Image to Docker Registry
+			
+			Target Environment : -> QA/STAGE/PROD 
+			- Self Hosted Agent 
+			
+				-  Deploy to Target Environment 
+				
+			Pre-Requisites to work on Github Action workflow :
+
+				--> Eg.: DockerHub Credentials 
+				
+				1. Create Secret_Variables - DockerHub Username & PAT 
+				
+				
+	
+		Github-Actions :::::
+	
+	Automate the Model Creation and Containerization using CICD Workflow - github-actions workflow.
+	
+	Setup-self-hosted Agent on github
+	
+	Deploy using Kubernetes 
+	
+		1. Launch a Target Server / Kubernetes Cluster & Attach IAM Role for S3.
+		2. Open all the required ports 
+		3. Login and Install the required packages
+				- Docker / K3s/Minikube/Kubeadm 
+		
+				- Install unzip utility / curl 
+				
+				- Install aws-cli 
+				
+				- aws configure 
+					- AWS: Access Token & Secret Key
+					
+		4. Setup the Credentials:
+			- Create linux user - devopsadminuser1
+				- valid Credentials - 
+					 Recommended to have ssh-key - public_Key & Private Keys 
+
+#Add User : 
+
+useradd devopsadmin -s /bin/bash -m -d /home/devopsadmin
+
+su - devopsadmin
+
+#ssh-keygen
+
+#for Ubuntu ::
+#ssh-keygen -t rsa -b 2048 -m PEM								#ubuntu 20.04
+
+ssh-keygen -t ecdsa -b 521										#ubuntu 22.04 or higher version of ubuntu				
+
+
+ls ~/.ssh 
+
+#You should see following two files:
+
+#id_ecdsa - private key
+#id_ecdsa.pub - public
+
+
+#cat id_rsa.pub > authorized_keys
+
+cat id_ecdsa.pub > authorized_keys
+
+chmod 600 /home/devopsadmin1/.ssh/*
+
+					 
+				- Enable user access to kubernetes Master 
+				
+					- Create .kube/config under user's home dir. 
+					- Use this user's kube/config file content as token for Authentication on github runner.
+					
+					
+		5. Setup github self-hosted action-runner
+		
+			- Goto the Repo level setting 
+			- Actions -> Runner 
+			- Create Runner based on the OS & follow the instructions. 
+					
+			ssh conn 
+
+
+Next: e2e deployment using k8s 
+		Monitor - mlflow - 
+			Prometheus & Grafana for Infra-Structure Monitor
+		
+		Use Case for AWS Sagemaker 
+
+
+github-actions workflow ::: # cicd pipeline
+
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  # =============================
+  # JOB 1: Build & Push Images
+  # =============================
+  build:
+    name: Build & Push to DockerHub
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Login to DockerHub
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # Build API image
+    - name: Build API Docker image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/loksai-mlops830api:latest -f docker/Dockerfile.api .
+
+    # Build UI image
+    - name: Build UI Docker image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/loksai-mlops830ui:latest -f docker/Dockerfile.ui .
+
+    # Push API image
+    - name: Push API image
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/loksai-mlops830api:latest
+
+    # Push UI image
+    - name: Push UI image
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/loksai-mlops830ui:latest
+
+  # =============================
+  # JOB 2: Deploy to Kubernetes
+  # =============================
+  deploy:  
+    name: Deploy to Kubernetes
+    runs-on: self-hosted
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup kubectl
+      run: |
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBECONFIG_DATA }}" > ~/.kube/config
+
+
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f k8s/api-deployment.yaml
+        kubectl apply -f k8s/ui-deployment.yaml
+
+
+
+	
+
+# Create data/raw/review.csv 
+
+
+review_text,sentiment
+I love this product it works perfectly,positive
+Absolutely fantastic quality and service,positive
+Very happy with the purchase,positive
+Great experience would buy again,positive
+Excellent product highly recommended,positive
+Amazing performance and value,positive
+Satisfied with quality and delivery,positive
+Works exactly as advertised,positive
+Customer support was very helpful,positive
+This is the best purchase I have made,positive
+
+This product is okay not great not bad,neutral
+Average quality nothing special,neutral
+It works but has some issues,neutral
+Neither good nor bad experience,neutral
+Product meets basic expectations,neutral
+Decent but could be improved,neutral
+Acceptable quality for the price,neutral
+Nothing impressive but usable,neutral
+Fine for occasional use,neutral
+Okayish experience overall,neutral
+
+Worst product I have ever bought,negative
+Very disappointed with the quality,negative
+Terrible experience waste of money,negative
+Does not work as expected at all,negative
+Extremely poor build quality,negative
+Bad experience will not recommend,negative
+Product stopped working in two days,negative
+Customer service was terrible,negative
+Totally useless and overpriced,negative
+Highly dissatisfied with this product,negative
+
+I am happy with the fast delivery,positive
+Packaging was good and product works well,positive
+Average packaging but product is decent,neutral
+Late delivery and damaged box,negative
+The item arrived broken,negative
+Very smooth and reliable performance,positive
+Not worth the price paid,negative
+Okay product but slow response,neutral
+Loved the design and usability,positive
+Disappointed with the overall experience,negative
+	
+	
+	
+	
+	
+	
+	
